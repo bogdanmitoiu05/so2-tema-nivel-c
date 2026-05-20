@@ -1,4 +1,4 @@
-# Tema Nivel C - SO2
+# Tema Nivel C - SO2 - Mitoiu Bogdan-Petru
 ### Probleme abordate:
 Am abordat problemele 1, 2 și 5 din secțiunea de teme a fișierului atașat la laboratorul 11.
 
