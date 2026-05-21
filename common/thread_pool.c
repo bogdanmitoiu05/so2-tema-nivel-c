@@ -29,8 +29,9 @@ void* thread_runner(void* thread_pool)
         if (funcFinalized) // daca s-a terminat functia, ia o alta sarcina
         {
             pthread_mutex_lock(&lockMutex); //blochează coada și așteaptă un element
-            while (tp->queue->front == NULL)
+            while (tp->queue->front == NULL && !tp->stopFlag)
                 pthread_cond_wait(&queueHasElements,&lockMutex);
+
             task = task_queue_pop_front(tp->queue);
             pthread_mutex_unlock(&lockMutex);
         }
@@ -40,9 +41,11 @@ void* thread_runner(void* thread_pool)
         if (funcFinalized)
         {
             task_destroy(task);
-            printf("Thread %lu finalized\n",pthread_self());
+            printf("Thread %lu finalized task. Awaiting new task\n",pthread_self());
         }
     }
+    pthread_cond_broadcast(&queueHasElements); // anunță și alte fire care au ajuns între timp la variabila condițională să se închidă
+    printf("Thread %lu has exited\n", pthread_self());
     return NULL;
 }
 thread_pool_t* thread_pool_new(size_t threadCount)
@@ -55,7 +58,8 @@ thread_pool_t* thread_pool_new(size_t threadCount)
     thread_pool->threadCount = threadCount;
     thread_pool->threads = calloc(threadCount, sizeof(pthread_t));
     thread_pool->queue = task_queue_new();
-    for (size_t i = 0; i<threadCount;++i)
+    thread_pool->_hasIssuedStop = false;
+    for (size_t i = 0; i < threadCount;++i)
     {
         pthread_create(&thread_pool->threads[i], NULL, thread_runner,thread_pool);
     }
@@ -99,6 +103,8 @@ void thread_pool_stop_all(thread_pool_t* thread_pool)
 {
     ENSURE_NOTNULL(thread_pool);
     thread_pool->stopFlag = true; // setam flagul de oprire
+    if (thread_pool->_hasIssuedStop) return;
+    thread_pool->_hasIssuedStop = true;
     pthread_cond_broadcast(&queueHasElements); // trezim toate firele sa se opreasca
     for (size_t i = 0; i < thread_pool->threadCount; ++i)
     {

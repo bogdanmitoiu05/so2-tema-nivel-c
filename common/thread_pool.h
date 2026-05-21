@@ -20,6 +20,7 @@ typedef struct thread_pool
     size_t threadCount;
     bool stopFlag;
     task_queue_t* queue;
+    bool _hasIssuedStop;
 
 }thread_pool_t;
 

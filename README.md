@@ -9,3 +9,10 @@ aproape aceleași structuri de date, din respect pentru principiul fundamental D
 tipurile de date și structurile comune într-o bibliotecă internă, cod al căreia m-am asigurat să comentez în amănunt.
 
 Fiecare subfolder aferent unei probleme are un fișier README care descrie enunțul problemei, rezultatele obținute și eventuale remărci asupra acestora.
+
+### Instrucțiuni de citire
+
+Înainte de a intra în analiza programelor, autorul recomandă vizitarea și familiarizarea cititorului cu macrocomenzile din cadrul `common/utils.h` și `common/task.h`. Acestea sunt folosite
+în acest proiect pentru a minimiza numărul de linii scrise și pentru a evidenția logica importantă din cadrul diferitelor metode.
+
+În continuare, autorul recomandă să se consulte folderele `pX` în orice ordine, folsind o abordare „depth-first” prin fișierele de include pentru a descoperi logica internă.

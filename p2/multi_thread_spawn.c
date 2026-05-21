@@ -5,6 +5,7 @@
 #include "multi_thread_spawn.h"
 
 #include <assert.h>
+#include <stdio.h>
 #include <utils.h>
 pthread_t* spawn_many(size_t noThreads, void*(* func)(void*))
 {
@@ -12,6 +13,7 @@ pthread_t* spawn_many(size_t noThreads, void*(* func)(void*))
     pthread_t* threads = calloc(noThreads, sizeof(pthread_t)); // creem spatiu pentru noThreads fire de executie
     for (size_t i = 0; i < noThreads; ++i)
     {
+        printf("Spawning thread\n");
         pthread_create(&threads[i], NULL, func, NULL);
     }
     return threads;
@@ -24,6 +26,7 @@ void wait_all(pthread_t* threads, size_t noThreads)
     for (size_t i = 0; i < noThreads; ++i)
     {
         pthread_join(threads[i], NULL); //aplicăm join pe ficare fir
+        printf("Thread joined\n");
     }
 
 }

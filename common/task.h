@@ -41,8 +41,26 @@ void task_destroy(task_t* task);
  * Secțiunea de macrocomenzi utile
  */
 
+/**
+ * Definește o nouă metodă de fir de excuție din cadrul thread pool ce se conformă specificației precizate.
+ *
+ * @see above
+ */
 #define THREAD_METHOD(name) bool name(__attribute_maybe_unused__ void* arg)
+
+/**
+ * Convertește argumentul primit în tipul de date T
+ *
+ * ATENȚIE: Această macrocomandă NU face verificări asupra conversiei, întrucât limbajul C nu ne permite acest lucru
+ * @param T Tipul de date țintă
+ */
 #define ARG_AS(T) (T) arg
+/**
+ * Cedează controlul temporar la sistemul de control al firelor de execuției
+ */
 #define YIELD return false;
+/**
+ * Marchează terminarea execuției metodei și permite firului de execuție să preia o altă sarcină
+ */
 #define RETURN return true;
 #endif //TEMA3_NIVC_TASK_H
